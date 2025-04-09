@@ -1,0 +1,17 @@
+---
+server:
+  port: 9091
+
+##Endpoint
+api:
+  url:
+    hello: /hello
+
+security:
+  oauth2:
+    resource:
+      jwt:
+        key-uri: http://localhost:8086/oauth/token_key
+    client:
+      client-id: resourceserver
+      client-secret: resourceserversecret

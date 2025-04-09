@@ -1,0 +1,9 @@
+---
+spring:
+  application:
+    name: ssia-ch2-ex1
+  config:
+    name: ${spring.application.name}
+  cloud:
+    config:
+      uri: http://localhost:8888

@@ -1,0 +1,15 @@
+---
+server:
+  port: 8086
+
+jwt:
+  key: MjWP5L7CiD
+
+data:
+  clientId: client
+  secret: secret
+  passwd: client_credentials
+  refresh: refresh_token
+  allowed: read
+  user: asesoftware
+  pwd: 8001355329

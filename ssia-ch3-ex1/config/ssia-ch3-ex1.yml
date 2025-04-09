@@ -1,0 +1,12 @@
+---
+server:
+  port: 8084
+
+api:
+  url:
+    helloController: /hello
+
+data:
+  userName: admin
+  password: admin
+  allow: read

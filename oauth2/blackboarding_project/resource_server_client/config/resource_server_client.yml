@@ -1,0 +1,15 @@
+---
+server:
+  port: 9091
+
+##Endpoint
+api:
+  url:
+    hello: /hello
+
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring
+    username: root
+    password: secret

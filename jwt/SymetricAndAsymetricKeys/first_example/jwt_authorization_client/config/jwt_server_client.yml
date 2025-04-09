@@ -1,0 +1,11 @@
+---
+server:
+  port: 9091
+
+##Endpoint
+api:
+  url:
+    hello: /hello
+
+jwt:
+  key: MjWP5L7CiD

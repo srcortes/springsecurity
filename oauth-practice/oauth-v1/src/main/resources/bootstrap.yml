@@ -1,0 +1,11 @@
+---
+spring:
+  application:
+    name: aouth-v1
+  profiles:
+    active: dev
+  config:
+    name: ${spring.application.name}
+  cloud:
+    config:
+      uri: http://localhost:8888

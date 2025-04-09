@@ -1,0 +1,21 @@
+server:
+  port: 8005 #Puerto por defecto para temas de apigateway
+
+authorization:
+    key: ${spring.authorization.key}
+
+
+
+spring:
+  token:
+    id: root-token
+  sql:
+    init-mode: always
+  jpa:
+    database: MYSQL
+    show-sql: false
+  datasource:
+    platform: mysql
+    url: jdbc:mysql://167.99.146.56:3306/${spring.datasource.database}
+    initialization-mode: always
+    driver-class-name: com.mysql.cj.jdbc.Driver

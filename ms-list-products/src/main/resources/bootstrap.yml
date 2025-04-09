@@ -1,0 +1,22 @@
+---
+  spring:
+    application:
+        name: service-product
+    profiles:
+      active: dev, vault
+    config:
+      name: ${spring.application.name}
+      import: optional:vault://
+    cloud:
+      vault:
+        host: 167.99.146.56
+        port: 8200
+        kv:
+          enabled: true
+          backend: kv
+          default-context: credentials
+        authentication: TOKEN
+        scheme: http
+        token: hvs.XDGWw9G72b5xFlvsSnoMWrGj
+      config:
+        uri: http://localhost:8888

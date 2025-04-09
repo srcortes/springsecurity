@@ -1,0 +1,16 @@
+server:
+  port: 8090 #Puerto por defecto para temas de apigateway
+
+spring:
+  sql:
+    init-mode: always
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    platform: mysql
+    url: jdbc:mysql://localhost:3306/${spring.datasource.database}
+    initialization-mode: always
+    driver-class-name: com.mysql.cj.jdbc.Driver

@@ -1,0 +1,16 @@
+---
+server:
+  port: 9090
+
+##Endpoint
+api:
+  url:
+    hello: /hello
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://localhost:8083/oauth/check_token
+    client:
+      client-id: resourceserver
+      client-secret: resourceserversecret

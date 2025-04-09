@@ -1,0 +1,14 @@
+---
+spring:
+  application:
+    name: ssia-ch3-ex2
+  profiles:
+    active: uat
+  config:
+    name: ${spring.application.name}
+  cloud:
+    config:
+      uri: http://localhost:8888
+
+  main:
+    allow-bean-definition-override: true

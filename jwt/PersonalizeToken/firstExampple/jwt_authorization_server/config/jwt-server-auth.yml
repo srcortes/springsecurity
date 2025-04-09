@@ -1,0 +1,19 @@
+---
+server:
+  port: 8086
+
+jwt:
+  password: ssia123
+  privateKey: ssia.jks
+  alias: ssia
+
+data:
+  clientId: client
+  secret: secret
+  passwd: password
+  withClient: resourceserver
+  withSecret: resourceserversecret
+  refresh: refresh_token
+  allowed: read
+  user: asesoftware
+  pwd: 8001355329

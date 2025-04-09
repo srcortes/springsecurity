@@ -1,0 +1,19 @@
+---
+server:
+  port: 9091
+
+##Endpoint
+api:
+  url:
+    hello: /hello
+
+jwt:
+  publicKey: -----BEGIN PUBLIC KEY-----
+                MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiVsvIztTT8Hl64UNpTg6
+                t6IqpYGr6fciSF0qBUdujnQvE/pApfkr0AiJDH+J2w+bxAdchY4hxqbdNExA3yIE
+                fToluXID19kImSvaGThy2hrqmwY1FG5yCqVfWdqYuULzfvN8XXEr3beo+Sr+od+C
+                c4tCPWDAPELRBpO+/fqJ1eZgfNQkSnUMzvuoTf9n/4+37p+0u3LgAbuAHWHHzmUW
+                SJzGwsJ9dVN3besioXJwIw5MOwtLJNizAhuaKfnY0RIBgMBnEwc//rfEoRNEBBs9
+                ggTjMKveCQEdTk7//8Er82j1JQqFs8D0H3UG4IQWrGSDS7/xmRbsCiAsBlWbU/nH
+                JwIDAQAB
+             -----END PUBLIC KEY-----

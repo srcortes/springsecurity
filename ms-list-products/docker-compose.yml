@@ -1,0 +1,80 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql-server
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'spring'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'admin'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'secret'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 's3cr3t'
+    networks:
+      - springbankNet  
+    ports:
+      # <Port exposed> : <MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - my-db:/var/lib/mysql
+
+  adminer:
+    image: dockette/adminer:full
+    container_name: adminer
+    ports:
+      - "8000:80"
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    networks:
+      - springbankNet
+    depends_on:
+     - db    
+
+  vault:
+    image: vault:1.13.3
+    container_name: vault
+    command: server
+    cap_add:
+      - IPC_LOCK
+    environment:
+       VAULT_LOCAL_CONFIG: >
+        {
+          "storage": {
+            "file": {
+              "path": "/vault/file"
+            }
+          },
+          "listener": [
+            {
+              "tcp": {
+                "address": "0.0.0.0:8200",
+                "tls_disable": true
+              }
+            }
+          ],
+          "api_addr": "http://1x.2xx.1xx.1xx:8200",
+          "default_lease_ttl": "168h",
+          "max_lease_ttl": "720h",
+          "ui": true
+        }        
+    ports:
+      - "8200:8200"
+    networks:
+      - springbankNet 
+    volumes:
+      - vault_data:/vault/file      
+
+# Names our volume
+volumes:
+  my-db:
+  vault_data:                    
+
+networks:
+  springbankNet:
+      

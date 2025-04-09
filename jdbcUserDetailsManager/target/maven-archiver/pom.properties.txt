@@ -1,0 +1,3 @@
+artifactId=jdbcUserDetailsManager
+groupId=com.formacionbdi.springsecurity
+version=1.0-SNAPSHOT

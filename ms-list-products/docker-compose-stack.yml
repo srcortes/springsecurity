@@ -1,0 +1,122 @@
+version: '3.8' # Use a version supporting deploy/secrets
+
+services:
+  # MySQL Database Service
+  mysql:
+    image: mysql:8.0 # Using a specific version is recommended over latest
+    hostname: mysql # Explicit hostname can sometimes help
+    volumes:
+      - mysql-data:/var/lib/mysql # Named volume for persistent data storage
+    networks:
+      - appNet # Connect to the custom overlay network
+    environment:
+      # Note: MYSQL_ROOT_PASSWORD is set via secret below
+      MYSQL_DATABASE: spring # Optional: Create this database on startup
+      MYSQL_USER:  /run/secrets/mysql_user # Optional: Create this user on startup
+      # MYSQL_PASSWORD_FILE: /run/secrets/mysql_user_password # Optional: If creating user
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password # Location of the secret file inside the container
+    ports:
+      - 33060:3306  
+    secrets:
+      - mysql_root_password # Grant access to this secret
+      - mysql_user
+      # - mysql_user_password # Grant access if using a user password secret
+    deploy:
+      replicas: 1 # MySQL typically runs as a single instance unless using complex clustering
+      placement:
+        # Optional: Constrain MySQL to run only on manager nodes, or nodes with specific labels
+        constraints: [node.role == manager]
+        # constraints: [node.labels.storage == ssd]
+      restart_policy:
+        condition: on-failure
+      resources: # Optional: Define resource limits/reservations
+        limits:
+          memory: 0.8G
+        # reservations:
+        #   memory: 512M
+
+  # Adminer Service (Web UI for Database)
+  adminer:
+    image: adminer:latest # Web-based DB management tool
+    ports:
+      # Map port 8080 on the host Swarm network to port 8080 in the container
+      # Access via http://<any_swarm_node_ip>:8080
+      - "8080:8080"
+    networks:
+      - appNet # Must be on the same network as MySQL
+    environment:
+      # Pre-fill the server field in Adminer login with the MySQL service name
+      ADMINER_DEFAULT_SERVER: mysql
+    depends_on: # Controls startup order, doesn't guarantee MySQL is fully ready
+      - mysql
+    deploy:
+      replicas: 1 # Adminer is stateless, 1 replica is usually enough
+      restart_policy:
+        condition: on-failure
+      resources: # Optional: Resource limits for Adminer
+        limits:
+          memory: 128M
+    healthcheck:
+      # Check if the Adminer web server is responding correctly
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s      # Check every 30 seconds
+      timeout: 10s       # Wait up to 10 seconds for the check to complete
+      retries: 3         # Consider unhealthy after 3 consecutive failures
+      start_period: 15s
+
+  vault:
+    image: vault:1.13.3
+    command: server
+    cap_add:
+      - IPC_LOCK
+    environment:
+       VAULT_LOCAL_CONFIG: >
+        {
+          "storage": {
+            "file": {
+              "path": "/vault/file"
+            }
+          },
+          "listener": [
+            {
+              "tcp": {
+                 "address": "0.0.0.0:8200",
+                "tls_disable": true
+              }
+            }
+          ],
+          "api_addr": "http://1x.2xx.1xx.1xx:8200",
+          "default_lease_ttl": "168h",
+          "max_lease_ttl": "720h",
+          "ui": true
+        }
+    ports:
+      - "8200:8200"
+    networks:
+      - appNet
+    volumes:
+      - vault_data:/vault/file
+
+# Define Networks
+networks:
+  appNet:
+    driver: overlay # Essential for Swarm multi-host communication
+    # attachable: true # Optional: Allows standalone containers to attach for debugging
+
+# Define Volumes
+volumes:
+  mysql-data: # Define the named volume used by the mysql service
+  vault_data:
+
+
+# Define Secrets
+secrets:
+  mysql_root_password:
+    external: true
+  mysql_user:
+    external: true   # IMPORTANT: Secret must be created outside this compose file
+  # mysql_user_passwor
+
+
+
+

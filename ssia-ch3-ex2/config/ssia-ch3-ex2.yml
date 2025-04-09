@@ -1,0 +1,22 @@
+---
+server:
+  port: 8085
+
+api:
+  url:
+    helloController: /hello
+
+spring:
+  sql:
+    init-mode: always
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    platform: mysql
+    url: jdbc:mysql://localhost:33060/spring
+    username: root
+    password: secret
+    initialization-mode: always
