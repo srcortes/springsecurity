@@ -17,6 +17,6 @@
           default-context: credentials
         authentication: TOKEN
         scheme: http
-        token: hvs.XDGWw9G72b5xFlvsSnoMWrGj
+        token:
       config:
         uri: http://localhost:8888
